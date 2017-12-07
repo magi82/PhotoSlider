@@ -1,5 +1,5 @@
 //
-//  FlickrRepositoryImpl.swift
+//  FlickrPhotoRepositoryImpl.swift
 //  PhotoSlider
 //
 //  Created by Dooho Chang on 2017. 12. 7..
@@ -10,7 +10,7 @@ import RxSwift
 import Moya
 import SwiftyJSON
 
-class FlickrRepositoryImpl: FlickrRepository {
+class FlickrPhotoRepositoryImpl: FlickrPhotoRepository {
     let apiProvider: MoyaProvider<FlickrAPI>
     
     init(apiProvider: MoyaProvider<FlickrAPI>) {
@@ -18,20 +18,23 @@ class FlickrRepositoryImpl: FlickrRepository {
     }
     
     func getPublicPhotos() -> Single<[FlickrPhoto]> {
-        return apiProvider
-            .rx.request(.getPublicPhotos)
-            .map { response -> [FlickrPhoto] in
-                guard (200 ..< 300) ~= response.statusCode else {
-                    throw FlickrRepositoryError.invalidStatusCode(response.statusCode)
+        return Single.deferred {
+            // deferred로 감싸줌으로써 해당 메소드의 사용자가 subscribeOn을 통해 scheduler를 설정할 수 있도록 합니다.
+            self.apiProvider
+                .rx.request(.getPublicPhotos)
+                .map { response -> [FlickrPhoto] in
+                    guard (200 ..< 300) ~= response.statusCode else {
+                        throw FlickrPhotoRepositoryError.invalidStatusCode(response.statusCode)
+                    }
+                    
+                    return try self.parsePhotos(from: response.data)
                 }
-                
-                return try self.parsePhotos(from: response.data)
-            }
+        }
     }
     
     private func parsePhotos(from data: Data) throws -> [FlickrPhoto] {
         let json = try JSON(data: data)
-        guard let jsonPhotos = json["items"].array else { throw FlickrRepositoryError.jsonParsingError }
+        guard let jsonPhotos = json["items"].array else { throw FlickrPhotoRepositoryError.jsonParsingError }
         
         let photos = jsonPhotos
             .flatMap { self.parsePhoto(from: $0) }

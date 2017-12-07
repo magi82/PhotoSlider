@@ -1,5 +1,5 @@
 //
-//  FlickrRepository.swift
+//  FlickrPhotoRepository.swift
 //  PhotoSlider
 //
 //  Created by Dooho Chang on 2017. 12. 7..
@@ -8,7 +8,7 @@
 
 import RxSwift
 
-protocol FlickrRepository {
+protocol FlickrPhotoRepository {
     func getPublicPhotos() -> Single<[FlickrPhoto]>
 }
 
@@ -21,7 +21,7 @@ struct FlickrPhoto {
     let description: String?
 }
 
-enum FlickrRepositoryError: Error {
+enum FlickrPhotoRepositoryError: Error {
     case invalidStatusCode(Int)
     case jsonParsingError
 }
