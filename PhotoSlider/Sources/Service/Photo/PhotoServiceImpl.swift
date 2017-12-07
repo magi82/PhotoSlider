@@ -27,23 +27,27 @@ class PhotoServiceImpl: PhotoService {
                 .getPublicPhotos()
                 .asObservable()
                 .flatMap { flickrPhotos -> Observable<Photo> in
-                    let imageRequests = flickrPhotos
+                    let loadPhotoRequests = flickrPhotos
                         .map { flickrPhoto -> Observable<Photo> in
-                            self.imageRepository
-                                .loadImage(from: flickrPhoto.imageURL)
+                            self.loadPhoto(from: flickrPhoto)
                                 .asObservable()
                                 .catchError { _ in .empty() } // 개별 이미지 로드가 실패하더라도 에러를 발생시키지 않는다.
-                                .map { image -> Photo in
-                                    Photo(
-                                        title: flickrPhoto.title,
-                                        image: image,
-                                        description: flickrPhoto.description
-                                    )
-                                }
                         }
                     
-                    return Observable.merge(imageRequests)
+                    return Observable.merge(loadPhotoRequests)
                 }
         }
+    }
+    
+    private func loadPhoto(from flickrPhoto: FlickrPhoto) -> Single<Photo> {
+        return imageRepository
+            .loadImage(from: flickrPhoto.imageURL)
+            .map { image -> Photo in
+                Photo(
+                    title: flickrPhoto.title,
+                    image: image,
+                    description: flickrPhoto.description
+                )
+            }
     }
 }
