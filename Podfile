@@ -7,10 +7,10 @@ target 'PhotoSlider' do
 
   # UI
   pod 'SnapKit'
-  pod 'Kingfisher'
 
-  # Networking
+  # Networking, Data Handling
   pod 'Moya/RxSwift'
+  pod 'SwiftyJSON'
 
   # Reactive frameworks
   pod 'RxSwift'
