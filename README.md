@@ -1,16 +1,16 @@
 # PhotoSlider
 
-PhotoSlider provides photo slide show by using [Flickr public feed](https://www.flickr.com/services/feeds/docs/photos_public/)
+PhotoSlider provides photo slide show by using [Flickr Public Feed](https://www.flickr.com/services/feeds/docs/photos_public/)
 
 ## Features
 
 * Implemented by using funcional, reactive, declarative programming
 * 5-Layer designed architecture pattern
-    1. Data
-    2. Repository
-    3. Service
-    4. ViewModel
-    5. View
+    * Data
+    * Repository
+    * Service
+    * ViewModel
+    * View
 * Simple centralized dependency injection by using pure Swift
 
 ## Using Libraries
