@@ -75,7 +75,7 @@ class MainViewController: UIViewController {
         titleLabel.text = "Photo Slider"
         titleLabel.font = .systemFont(ofSize: 30, weight: .bold)
         
-        durationTitleLabel.text = "한 사진 당 보이는 시간을 설정하세요(1 ~ 10초)"
+        durationTitleLabel.text = "사진 하나당 보이는 시간을 설정하세요(1 ~ 10초)"
         durationTitleLabel.font = .systemFont(ofSize: 14)
         
         durationValueLabel.font = .systemFont(ofSize: 16)
