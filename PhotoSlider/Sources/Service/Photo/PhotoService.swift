@@ -15,5 +15,4 @@ protocol PhotoService {
 struct Photo {
     let title: String
     let image: UIImage
-    let description: String?
 }

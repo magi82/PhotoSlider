@@ -16,9 +16,6 @@ struct FlickrPhoto {
     // Required
     let title: String
     let imageURL: URL
-    
-    // Optional
-    let description: String?
 }
 
 enum FlickrPhotoRepositoryError: Error {

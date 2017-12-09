@@ -46,6 +46,8 @@ class AlbumViewController: UIViewController {
     
     private func layout() {
         view.backgroundColor = .black
+        photoSliderView.contentMode = .scaleAspectFit
+        
         view.addSubview(photoSliderView)
         
         photoSliderView.snp.makeConstraints {

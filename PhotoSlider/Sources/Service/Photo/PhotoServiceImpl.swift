@@ -50,8 +50,7 @@ class PhotoServiceImpl: PhotoService {
             .map { image -> Photo in
                 Photo(
                     title: flickrPhoto.title,
-                    image: image,
-                    description: flickrPhoto.description
+                    image: image
                 )
             }
     }

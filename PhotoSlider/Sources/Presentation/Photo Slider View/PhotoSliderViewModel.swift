@@ -10,40 +10,42 @@ import RxSwift
 import RxCocoa
 
 protocol PhotoSliderViewModel: PhotoSliderViewBindable {
-    func present(photos: [Photo]) -> Observable<Int> // Current presenting photo index
+    func present(photos: [Photo]) -> Observable<Int> // number of remaining photos
 }
 
 class PhotoSliderViewModelImpl: PhotoSliderViewModel {
     let photoDuration: Double
-    private let photoStream: PublishSubject<Photo> // Unique mutable state of PhotoSliderViewModelImpl
+    private let photoStream = PublishSubject<Photo>() // unique mutable state of PhotoSliderViewModelImpl
     
     let setPhoto: Signal<(photo: Photo, animatingDuration: Double)>
     
     init(photoDuration: Double) {
         self.photoDuration = photoDuration
         
+        let animatingDuration = min(photoDuration / 5, 1)
+        
         self.setPhoto = photoStream
-            .map { (photo: $0, animatingDuration: photoDuration / 8) }
+            .map { (photo: $0, animatingDuration: animatingDuration) }
             .asSignal(onErrorSignalWith: .empty())
     }
     
     func present(photos: [Photo]) -> Observable<Int> {
-        return Observable.deferred { [photoDuration, photoStream]
+        return Observable.deferred {
             let stream = Observable.from(photos)
                 .concatMap { photo -> Observable<Photo> in
-                    let duration: Observable<Photo> = .empty()
-                        .delay(photoDuration, scheduler: MainScheduler.instance)
+                    let duration = Observable<Photo>.empty()
+                        .delay(self.photoDuration, scheduler: MainScheduler.instance)
                     
-                    return .just(photo).concat(duration)
+                    return Observable.just(photo).concat(duration)
                 }
             
             let streamWithSideEffect = stream
                 .do(onNext: { photo in
-                    photoStream.onNext(photo)
+                    self.photoStream.onNext(photo)
                 })
             
             return streamWithSideEffect
-                .scan(-1) { count, _ in count + 1 } // index of presenting photo
+                .scan(photos.count) { count, _ in count - 1 } // number of remaining photos
         }
     }
 }

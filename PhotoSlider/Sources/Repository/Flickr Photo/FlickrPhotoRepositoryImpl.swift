@@ -50,13 +50,9 @@ class FlickrPhotoRepositoryImpl: FlickrPhotoRepository {
                 .first
             else { return nil }
         
-        // generate optional description
-        let description = json["description"].string
-
         return FlickrPhoto(
             title: title,
-            imageURL: imageURL,
-            description: description
+            imageURL: imageURL
         )
     }
 }
