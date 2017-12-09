@@ -13,12 +13,11 @@ protocol FlickrPhotoRepository {
 }
 
 struct FlickrPhoto {
-    // Required
     let title: String
     let imageURL: URL
 }
 
 enum FlickrPhotoRepositoryError: Error {
     case invalidStatusCode(Int)
-    case jsonParsingError
+    case jsonParsingError(String)
 }

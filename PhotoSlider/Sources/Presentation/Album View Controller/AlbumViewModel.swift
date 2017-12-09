@@ -22,8 +22,13 @@ class AlbumViewModelImpl: AlbumViewModel {
     }
     private let events = PublishSubject<Event>() // unique mutable state of AlbumViewModelImpl
     
+    // View States
+    let isLoading: Driver<Bool>
+    let dismiss: Signal<Void>
+    
     // View Actions
     var viewDidAppear = PublishSubject<Void>()
+    var exitButtonTapped = PublishSubject<Void>()
     
     init(
         photoSliderViewModel: PhotoSliderViewModel,
@@ -33,6 +38,15 @@ class AlbumViewModelImpl: AlbumViewModel {
         
         let shouldReload = events.filterReloadEvent()
         let photosLoaded = events.filterPhotosEvent()
+        
+        self.isLoading = photosLoaded
+            .take(1)
+            .map { _ in false }
+            .startWith(true)
+            .asDriver(onErrorJustReturn: true)
+        
+        self.dismiss = exitButtonTapped
+            .asSignal(onErrorSignalWith: .empty())
         
         let implementation = AlbumViewModelImpl.self
         
@@ -59,11 +73,18 @@ class AlbumViewModelImpl: AlbumViewModel {
             .do(onNext: { [events] in events.onNext(.reload) })
             .subscribe()
             .disposed(by: disposeBag)
+        
+        // exitButtonTapped finishes event
+        exitButtonTapped
+            .take(1)
+            .do(onNext: { [events] in events.onCompleted() })
+            .subscribe()
+            .disposed(by: disposeBag)
     }
 }
 
 extension AlbumViewModelImpl {
-    private static let remainingThreshold = 3
+    private static let remainingThreshold = 10
 
     class func generateEvents(
         fromReloadEvents reload: Observable<Void>,

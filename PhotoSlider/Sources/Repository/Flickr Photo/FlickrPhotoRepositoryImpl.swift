@@ -27,14 +27,17 @@ class FlickrPhotoRepositoryImpl: FlickrPhotoRepository {
                         throw FlickrPhotoRepositoryError.invalidStatusCode(response.statusCode)
                     }
                     
-                    return try self.parsePhotos(from: response.data)
+                    return try self.parsePhotos(from: response)
                 }
         }
     }
     
-    private func parsePhotos(from data: Data) throws -> [FlickrPhoto] {
-        let json = try JSON(data: data)
-        guard let jsonPhotos = json["items"].array else { throw FlickrPhotoRepositoryError.jsonParsingError }
+    private func parsePhotos(from response: Response) throws -> [FlickrPhoto] {
+        let string = try response.mapString()
+        let json = JSON(parseJSON: string)
+        guard let jsonPhotos = json["items"].array else {
+            throw FlickrPhotoRepositoryError.jsonParsingError(string)
+        }
         
         let photos = jsonPhotos
             .flatMap { self.parsePhoto(from: $0) }

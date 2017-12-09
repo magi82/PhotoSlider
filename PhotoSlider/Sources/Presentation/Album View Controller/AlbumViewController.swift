@@ -15,14 +15,22 @@ protocol AlbumViewControllerBindable {
     // Properties for View
     var photoSliderViewModel: PhotoSliderViewBindable { get }
     
+    // View States
+    var isLoading: Driver<Bool> { get }
+    var dismiss: Signal<Void> { get }
+    
     // View Actions
     var viewDidAppear: PublishSubject<Void> { get }
+    var exitButtonTapped: PublishSubject<Void> { get }
 }
 
 class AlbumViewController: UIViewController {
     private var disposeBag = DisposeBag()
     
     let photoSliderView: PhotoSliderView
+    
+    let loadingIndicator = UIActivityIndicatorView(activityIndicatorStyle: .whiteLarge)
+    let exitButton = UIButton()
     
     init(photoSliderView: PhotoSliderView) {
         self.photoSliderView = photoSliderView
@@ -32,10 +40,24 @@ class AlbumViewController: UIViewController {
     func bind(_ viewModel: AlbumViewControllerBindable) {
         self.disposeBag = DisposeBag()
         
-        photoSliderView.bind(viewModel.photoSliderViewModel) // Bind subview
+        photoSliderView.bind(viewModel.photoSliderViewModel) // bind subview
         
+        // inputs
+        viewModel.isLoading
+            .drive(self.rx.isLoading)
+            .disposed(by: disposeBag)
+        
+        viewModel.dismiss
+            .emit(to: self.rx.dismiss)
+            .disposed(by: disposeBag)
+        
+        // outputs
         self.rx.viewDidAppear
             .bind(to: viewModel.viewDidAppear)
+            .disposed(by: disposeBag)
+        
+        exitButton.rx.tap
+            .bind(to: viewModel.exitButtonTapped)
             .disposed(by: disposeBag)
     }
     
@@ -47,17 +69,41 @@ class AlbumViewController: UIViewController {
     private func layout() {
         view.backgroundColor = .black
         photoSliderView.contentMode = .scaleAspectFit
+        exitButton.setTitle("Exit", for: .normal)
         
         view.addSubview(photoSliderView)
+        view.addSubview(loadingIndicator)
+        view.addSubview(exitButton)
         
         photoSliderView.snp.makeConstraints {
-            $0.top.equalTo(topLayoutGuide.snp.bottom)
-            $0.bottom.equalTo(bottomLayoutGuide.snp.top)
-            $0.left.right.equalToSuperview()
+            $0.edges.equalToSuperview()
+        }
+        
+        loadingIndicator.snp.makeConstraints {
+            $0.center.equalToSuperview()
+        }
+        
+        exitButton.snp.makeConstraints {
+            $0.top.equalTo(topLayoutGuide.snp.bottom).offset(4)
+            $0.right.equalToSuperview().inset(16)
         }
     }
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+}
+
+extension Reactive where Base: AlbumViewController {
+    var isLoading: Binder<Bool> {
+        return Binder(base.loadingIndicator) { indicator, isLoading in
+            indicator.isHidden = !isLoading
+            
+            if isLoading {
+                indicator.startAnimating()
+            } else {
+                indicator.stopAnimating()
+            }
+        }
     }
 }

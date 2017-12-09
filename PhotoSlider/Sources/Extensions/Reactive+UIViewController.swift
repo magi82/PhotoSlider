@@ -18,5 +18,11 @@ extension Reactive where Base: UIViewController {
         
         return ControlEvent(events: signal)
     }
+    
+    var dismiss: Binder<Void> {
+        return Binder(base) { viewController, _ in
+            viewController.dismiss(animated: true, completion: nil)
+        }
+    }
 }
 
