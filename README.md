@@ -2,6 +2,8 @@
 
 PhotoSlider provides photo slide show by using [Flickr Public Feed](https://www.flickr.com/services/feeds/docs/photos_public/)
 
+![Screenshot on iPhone X](https://github.com/DooHoDoo/PhotoSlider/blob/master/ScreenShots/screenshot_iphoneX.png?raw=true)
+
 ## Features
 
 * Implemented by using funcional, reactive, declarative programming
