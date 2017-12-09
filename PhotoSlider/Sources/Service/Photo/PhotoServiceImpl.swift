@@ -21,22 +21,27 @@ class PhotoServiceImpl: PhotoService {
         self.imageRepository = imageRepository
     }
     
-    func getPhotos() -> Observable<Photo> {
-        return Observable.deferred {
+    func getPhotos() -> Single<[Photo]> {
+        return Single.deferred {
             self.filckrPhotoRepository
                 .getPublicPhotos()
-                .asObservable()
-                .flatMap { flickrPhotos -> Observable<Photo> in
-                    let loadPhotoRequests = flickrPhotos
-                        .map { flickrPhoto -> Observable<Photo> in
-                            self.loadPhoto(from: flickrPhoto)
-                                .asObservable()
-                                .catchError { _ in .empty() } // 개별 이미지 로드가 실패하더라도 에러를 발생시키지 않는다.
-                        }
-                    
-                    return Observable.merge(loadPhotoRequests)
+                .flatMap { flickrPhotos -> Single<[Photo]> in
+                    self.loadPhotos(from: flickrPhotos)
+                        .reduce([]) { $0 + [$1] } // collect loaded photos into array
+                        .asSingle()
                 }
         }
+    }
+    
+    private func loadPhotos(from flickrPhotos: [FlickrPhoto]) -> Observable<Photo> {
+        let loadPhotoRequests = flickrPhotos
+            .map { flickrPhoto -> Observable<Photo> in
+                self.loadPhoto(from: flickrPhoto)
+                    .asObservable()
+                    .catchError { _ in .empty() } // 개별 이미지 로드가 실패하더라도 에러를 발생시키지 않는다.
+            }
+        
+        return Observable.merge(loadPhotoRequests)
     }
     
     private func loadPhoto(from flickrPhoto: FlickrPhoto) -> Single<Photo> {

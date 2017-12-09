@@ -9,7 +9,7 @@
 import RxSwift
 
 protocol PhotoService {
-    func getPhotos() -> Observable<Photo> // get public photo stream from flickr
+    func getPhotos() -> Single<[Photo]> // get public photos from flickr
 }
 
 struct Photo {
