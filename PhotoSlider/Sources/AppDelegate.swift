@@ -7,6 +7,8 @@
 //
 
 import UIKit
+import RxSwift
+import Moya
 import Then
 
 @UIApplicationMain
@@ -20,6 +22,31 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             $0.rootViewController = UIViewController()
             $0.makeKeyAndVisible()
         }
+        
+        let flickrRepository: FlickrPhotoRepository = FlickrPhotoRepositoryImpl(
+            apiProvider: MoyaProvider<FlickrAPI>()
+        )
+        
+        let imageRepository: ImageRepository = ImageRepositoryImpl(
+            imageProvider: MoyaProvider<ImageTarget>()
+        )
+        
+        let images = flickrRepository.getPublicPhotos()
+            .asObservable()
+            .flatMap { photos -> Observable<UIImage> in
+                let imageRequests = photos
+                    .map { photo -> Observable<UIImage> in
+                        imageRepository
+                            .loadImage(from: photo.imageURL)
+                            .asObservable()
+                            .catchError { _ in .empty() }
+                    }
+                
+                return Observable.merge(imageRequests)
+            }
+            
+        _ = images.debug("loaded images").subscribe()
+        
         return true
     }
 
