@@ -1,8 +1,8 @@
 # PhotoSlider
 
-PhotoSlider provides photo slide show by using [Flickr Public Feed](https://www.flickr.com/services/feeds/docs/photos_public/){: width="50%" height="50%"}
+PhotoSlider provides photo slide show by using [Flickr Public Feed](https://www.flickr.com/services/feeds/docs/photos_public/)
 
-![Screenshot on iPhone X](https://github.com/DooHoDoo/PhotoSlider/blob/master/ScreenShots/screenshot_iphoneX.png?raw=true)
+<img src="https://github.com/DooHoDoo/PhotoSlider/blob/master/ScreenShots/screenshot_iphoneX.png?raw=true" width="30%" height="30%">
 
 ## Features
 
