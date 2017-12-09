@@ -16,7 +16,7 @@ protocol PhotoSliderViewBindable {
 }
 
 class PhotoSliderView: FadingImageView {
-    var disposeBag = DisposeBag()
+    private var disposeBag = DisposeBag()
     
     func bind(_ viewModel: PhotoSliderViewBindable) {
         self.disposeBag = DisposeBag()
