@@ -12,7 +12,7 @@ import RxCocoa
 
 extension Reactive where Base: UIViewController {
     var viewDidAppear: ControlEvent<Void> {
-        let signal = methodInvoked(#selector(Base.viewWillAppear))
+        let signal = methodInvoked(#selector(Base.viewDidAppear))
             .map { _ in Void() }
             .takeUntil(deallocated)
         
