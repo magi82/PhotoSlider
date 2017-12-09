@@ -72,11 +72,16 @@ class MainViewController: UIViewController {
     
     private func layout() {
         view.backgroundColor = .white
-        titleLabel.text = "Photo Slider"
-        titleLabel.font = .systemFont(ofSize: 30, weight: .bold)
         
-        durationTitleLabel.text = "사진 하나당 보이는 시간을 설정하세요(1 ~ 10초)"
-        durationTitleLabel.font = .systemFont(ofSize: 14)
+        titleLabel.do {
+            $0.text = "Photo Slider"
+            $0.font = .systemFont(ofSize: 30, weight: .bold)
+        }
+        
+        durationTitleLabel.do {
+            $0.text = "사진 하나당 보이는 시간을 설정하세요(1 ~ 10초)"
+            $0.font = .systemFont(ofSize: 14)
+        }
         
         durationValueLabel.font = .systemFont(ofSize: 16)
         
@@ -88,14 +93,17 @@ class MainViewController: UIViewController {
             $0.setTitleColor(.red, for: .highlighted)
         }
         
-        enterButton.setTitle("시작하기", for: .normal)
-        enterButton.titleLabel?.font = .systemFont(ofSize: 20)
-        enterButton.backgroundColor = UIColor.blue.withAlphaComponent(0.6)
-        enterButton.contentEdgeInsets = .init(top: 7, left: 10, bottom: 7, right: 10)
-        enterButton.clipsToBounds = true
-        enterButton.layer.cornerRadius = 3
+        enterButton.do {
+            $0.setTitle("시작하기", for: .normal)
+            $0.titleLabel?.font = .systemFont(ofSize: 20)
+            $0.backgroundColor = UIColor.blue.withAlphaComponent(0.6)
+            $0.contentEdgeInsets = .init(top: 7, left: 10, bottom: 7, right: 10)
+            $0.clipsToBounds = true
+            $0.layer.cornerRadius = 3
+        }
         
         let centerView = UIView()
+        
         [titleLabel, durationTitleLabel, durationValueLabel, increaseButton, decreaseButton, enterButton]
             .forEach { centerView.addSubview($0) }
         

@@ -25,4 +25,3 @@ extension Reactive where Base: UIViewController {
         }
     }
 }
-

@@ -76,13 +76,15 @@ class AlbumViewController: UIViewController {
     }
     
     private func layout() {
-        view.backgroundColor = .black
         photoSliderView.contentMode = .scaleAspectFit
         exitButton.setTitle("Exit", for: .normal)
         
-        view.addSubview(photoSliderView)
-        view.addSubview(loadingIndicator)
-        view.addSubview(exitButton)
+        view.do {
+            $0.backgroundColor = .black
+            $0.addSubview(photoSliderView)
+            $0.addSubview(loadingIndicator)
+            $0.addSubview(exitButton)
+        }
         
         photoSliderView.snp.makeConstraints {
             $0.top.equalTo(topLayoutGuide.snp.bottom)
