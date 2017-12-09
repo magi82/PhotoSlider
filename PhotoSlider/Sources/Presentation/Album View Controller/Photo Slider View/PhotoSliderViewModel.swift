@@ -30,22 +30,20 @@ class PhotoSliderViewModelImpl: PhotoSliderViewModel {
     }
     
     func present(photos: [Photo]) -> Observable<Int> {
-        return Observable.deferred {
-            let stream = Observable.from(photos)
-                .concatMap { photo -> Observable<Photo> in
-                    let duration = Observable<Photo>.empty()
-                        .delay(self.photoDuration, scheduler: MainScheduler.instance)
-                    
-                    return Observable.just(photo).concat(duration)
-                }
-            
-            let streamWithSideEffect = stream
-                .do(onNext: { photo in
-                    self.photoStream.onNext(photo)
-                })
-            
-            return streamWithSideEffect
-                .scan(photos.count) { count, _ in count - 1 } // number of remaining photos
-        }
+        let stream = Observable.from(photos)
+            .concatMap { photo -> Observable<Photo> in
+                let duration = Observable<Photo>.empty()
+                    .delay(self.photoDuration, scheduler: MainScheduler.instance)
+                
+                return Observable.just(photo).concat(duration)
+            }
+        
+        let streamWithSideEffect = stream
+            .do(onNext: { photo in
+                self.photoStream.onNext(photo)
+            })
+        
+        return streamWithSideEffect
+            .scan(photos.count) { count, _ in count - 1 } // number of remaining photos
     }
 }

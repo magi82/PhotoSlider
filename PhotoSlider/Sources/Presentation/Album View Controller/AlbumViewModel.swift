@@ -107,6 +107,7 @@ extension AlbumViewModelImpl {
         photoService: PhotoService
     ) -> Observable<Event> {
         return reload
+            .observeOn(ConcurrentDispatchQueueScheduler(qos: .background))
             .flatMap { _ -> Single<Event> in
                 photoService.getPhotos()
                     .map { Event.photos($0) }
@@ -119,6 +120,7 @@ extension AlbumViewModelImpl {
         photoSliderViewModel: PhotoSliderViewModel
     ) -> Observable<Event> {
         return photos
+            .observeOn(ConcurrentDispatchQueueScheduler(qos: .userInteractive))
             .concatMap { photos -> Observable<Event> in // concatMap prevents concurrent requests to photoSliderViewModel
                 let remainingCountToReload = min(remainingThreshold, photos.count - 1)
                 

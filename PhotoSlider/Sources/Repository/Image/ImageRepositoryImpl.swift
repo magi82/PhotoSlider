@@ -17,10 +17,8 @@ class ImageRepositoryImpl: ImageRepository {
     }
     
     func loadImage(from url: URL) -> Single<UIImage> {
-        return Single.deferred {
-            self.imageProvider
-                .rx.request(.loadImage(url: url))
-                .map { try $0.mapImage() }
-        }
+        return self.imageProvider
+            .rx.request(.loadImage(url: url))
+            .map { try $0.mapImage() }
     }
 }

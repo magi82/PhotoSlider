@@ -22,15 +22,13 @@ class PhotoServiceImpl: PhotoService {
     }
     
     func getPhotos() -> Single<[Photo]> {
-        return Single.deferred {
-            self.filckrPhotoRepository
-                .getPublicPhotos()
-                .flatMap { flickrPhotos -> Single<[Photo]> in
-                    self.loadPhotos(from: flickrPhotos)
-                        .reduce([]) { $0 + [$1] } // reduce loaded photos into an array
-                        .asSingle()
-                }
-        }
+        return self.filckrPhotoRepository
+            .getPublicPhotos()
+            .flatMap { flickrPhotos -> Single<[Photo]> in
+                self.loadPhotos(from: flickrPhotos)
+                    .reduce([]) { $0 + [$1] } // reduce loaded photos into an array
+                    .asSingle()
+            }
     }
     
     private func loadPhotos(from flickrPhotos: [FlickrPhoto]) -> Observable<Photo> {

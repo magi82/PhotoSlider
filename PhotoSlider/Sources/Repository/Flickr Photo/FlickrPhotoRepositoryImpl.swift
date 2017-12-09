@@ -18,18 +18,15 @@ class FlickrPhotoRepositoryImpl: FlickrPhotoRepository {
     }
     
     func getPublicPhotos() -> Single<[FlickrPhoto]> {
-        return Single.deferred {
-            // deferred로 감싸줌으로써 해당 메소드의 사용자가 subscribeOn을 통해 scheduler를 설정할 수 있도록 합니다.
-            self.apiProvider
-                .rx.request(.getPublicPhotos)
-                .map { response -> [FlickrPhoto] in
-                    guard (200 ..< 300) ~= response.statusCode else {
-                        throw FlickrPhotoRepositoryError.invalidStatusCode(response.statusCode)
-                    }
-                    
-                    return try self.parsePhotos(from: response)
+        return self.apiProvider
+            .rx.request(.getPublicPhotos)
+            .map { response -> [FlickrPhoto] in
+                guard (200 ..< 300) ~= response.statusCode else {
+                    throw FlickrPhotoRepositoryError.invalidStatusCode(response.statusCode)
                 }
-        }
+                
+                return try self.parsePhotos(from: response)
+            }
     }
     
     private func parsePhotos(from response: Response) throws -> [FlickrPhoto] {
