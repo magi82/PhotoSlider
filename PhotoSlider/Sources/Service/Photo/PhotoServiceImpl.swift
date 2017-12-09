@@ -27,7 +27,7 @@ class PhotoServiceImpl: PhotoService {
                 .getPublicPhotos()
                 .flatMap { flickrPhotos -> Single<[Photo]> in
                     self.loadPhotos(from: flickrPhotos)
-                        .reduce([]) { $0 + [$1] } // collect loaded photos into array
+                        .reduce([]) { $0 + [$1] } // reduce loaded photos into an array
                         .asSingle()
                 }
         }

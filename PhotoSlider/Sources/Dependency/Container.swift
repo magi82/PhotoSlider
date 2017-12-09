@@ -31,6 +31,24 @@ class Container {
             imageRepository: imageRepository
         )
     
+    // Register ViewModel Dependencies
+    private func photoSliderViewModel(photoDuration: Double) -> PhotoSliderViewModel {
+        return PhotoSliderViewModelImpl(photoDuration: photoDuration)
+    }
+    
+    func albumViewModel(photoDuration: Double) -> AlbumViewModel {
+        return AlbumViewModelImpl(
+            photoSliderViewModel: photoSliderViewModel(photoDuration: photoDuration),
+            photoService: photoService
+        )
+    }
+    
+    private lazy var mainViewModel: MainViewModel
+        = MainViewModelImpl(
+            initialPhotoDuration: 3,
+            container: Container.instance
+        )
+    
     // Register View dependencies
     private func photoSliderView() -> PhotoSliderView {
         return PhotoSliderView()
@@ -51,24 +69,14 @@ class Container {
                 .then { $0.bind(mainViewModel) }
             $0.rootViewController = rootViewController
         }
-    
-    // Register ViewModel Dependencies
-    private func photoSliderViewModel(photoDuration: Double) -> PhotoSliderViewModel {
-        return PhotoSliderViewModelImpl(photoDuration: photoDuration)
-    }
-    
-    func albumViewModel(photoDuration: Double) -> AlbumViewModel {
-        return AlbumViewModelImpl(
-            photoSliderViewModel: photoSliderViewModel(photoDuration: photoDuration),
-            photoService: photoService
-        )
-    }
-    
-    private lazy var mainViewModel: MainViewModel
-        = MainViewModelImpl(
-            initialPhotoDuration: 3,
-            container: Container.instance
-        )
 }
 
 extension Container: ContainerForMainViewController, ContainerForMainViewModel {}
+
+protocol ContainerForMainViewController {
+    func albumViewController() -> AlbumViewController
+}
+
+protocol ContainerForMainViewModel {
+    func albumViewModel(photoDuration: Double) -> AlbumViewModel
+}

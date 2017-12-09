@@ -22,7 +22,7 @@ class PhotoSliderView: FadingImageView {
         self.disposeBag = DisposeBag()
         
         viewModel.setPhoto
-            .flatMapFirst { [weak self] arguments -> Signal<Never> in
+            .flatMapFirst { [weak self] arguments -> Signal<Never> in // flatMapFirst prevents concurrent photo setting
                 guard let `self` = self else { return .empty() }
                 return self.rx
                     .set(

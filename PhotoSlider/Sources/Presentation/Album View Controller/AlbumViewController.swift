@@ -12,8 +12,7 @@ import RxSwift
 import RxCocoa
 
 protocol AlbumViewControllerBindable {
-    // Properties for binding
-    var photoSliderViewModel: PhotoSliderViewBindable { get }
+    var photoSliderViewModel: PhotoSliderViewBindable { get } // property for subview binding
     
     // States
     var isLoading: Driver<Bool> { get }

@@ -22,11 +22,11 @@ class AlbumViewModelImpl: AlbumViewModel {
     }
     private let events = PublishSubject<Event>() // unique mutable state of AlbumViewModelImpl
     
-    // View States
+    // View states
     let isLoading: Driver<Bool>
     let dismiss: Signal<Void>
     
-    // View Actions
+    // View actions
     var viewDidAppear = PublishSubject<Void>()
     var exitButtonTapped = PublishSubject<Void>()
     
@@ -52,7 +52,7 @@ class AlbumViewModelImpl: AlbumViewModel {
         
         // Events generate future events
         implementation
-            .generateEvents(
+            .futureEvents(
                 fromReloadEvents: shouldReload,
                 photoService: photoService
             )
@@ -60,7 +60,7 @@ class AlbumViewModelImpl: AlbumViewModel {
             .disposed(by: disposeBag)
         
         implementation
-            .generateEvents(
+            .futureEvents(
                 fromPhotosEvents: photosLoaded,
                 photoSliderViewModel: photoSliderViewModel
             )
@@ -83,36 +83,6 @@ class AlbumViewModelImpl: AlbumViewModel {
     }
 }
 
-extension AlbumViewModelImpl {
-    private static let remainingThreshold = 10
-
-    class func generateEvents(
-        fromReloadEvents reload: Observable<Void>,
-        photoService: PhotoService
-    ) -> Observable<Event> {
-        return reload
-            .flatMap { _ -> Single<Event> in
-                photoService.getPhotos()
-                    .map { Event.photos($0) }
-                    .catchError { _ in .just(.reload) } // retry when service errored
-            }
-    }
-    
-    class func generateEvents(
-        fromPhotosEvents photos: Observable<[Photo]>,
-        photoSliderViewModel: PhotoSliderViewModel
-    ) -> Observable<Event> {
-        return photos
-            .concatMap { photos -> Observable<Event> in
-                let remainingCountToReload = min(remainingThreshold, photos.count - 1)
-                
-                return photoSliderViewModel.present(photos: photos)
-                    .filter { $0 == remainingCountToReload }
-                    .map { _ in Event.reload }
-            }
-    }
-}
-
 extension Observable where Element == AlbumViewModelImpl.Event {
     func filterReloadEvent() -> Observable<Void> {
         return self.flatMap { event -> Observable<Void> in
@@ -126,5 +96,35 @@ extension Observable where Element == AlbumViewModelImpl.Event {
             if case let .photos(photos) = event { return .just(photos) }
             return .empty()
         }
+    }
+}
+
+extension AlbumViewModelImpl {
+    private static let remainingThreshold = 10
+
+    class func futureEvents(
+        fromReloadEvents reload: Observable<Void>,
+        photoService: PhotoService
+    ) -> Observable<Event> {
+        return reload
+            .flatMap { _ -> Single<Event> in
+                photoService.getPhotos()
+                    .map { Event.photos($0) }
+                    .catchError { _ in .just(.reload) } // retry when service errored
+            }
+    }
+    
+    class func futureEvents(
+        fromPhotosEvents photos: Observable<[Photo]>,
+        photoSliderViewModel: PhotoSliderViewModel
+    ) -> Observable<Event> {
+        return photos
+            .concatMap { photos -> Observable<Event> in // concatMap prevents concurrent requests to photoSliderViewModel
+                let remainingCountToReload = min(remainingThreshold, photos.count - 1)
+                
+                return photoSliderViewModel.present(photos: photos)
+                    .filter { $0 == remainingCountToReload }
+                    .map { _ in Event.reload }
+            }
     }
 }

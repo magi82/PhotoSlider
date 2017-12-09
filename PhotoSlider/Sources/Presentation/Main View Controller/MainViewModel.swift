@@ -10,19 +10,16 @@ import RxSwift
 import RxCocoa
 import RxOptional
 
-protocol ContainerForMainViewModel {
-    func albumViewModel(photoDuration: Double) -> AlbumViewModel
-}
-
 protocol MainViewModel: MainViewControllerBindable {}
 
 class MainViewModelImpl: MainViewModel {
     let container: ContainerForMainViewModel
     
+    // View states
     let durationValueLabelText: Driver<String?>
     let presentAlbum: Signal<AlbumViewControllerBindable>
     
-    // Actions
+    // View actions
     let increaseButtonTapped = PublishSubject<Void>()
     let decreaseButtonTapped = PublishSubject<Void>()
     let enterButtonTapped = PublishSubject<Void>()

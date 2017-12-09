@@ -10,10 +10,10 @@ import UIKit
 import RxSwift
 import RxCocoa
 
-class FadingImageView: UIImageView { }
+class FadingImageView: UIImageView {}
 
 extension Reactive where Base: FadingImageView {
-    // Reactive methods for fading effects
+    // Reactive methods for fading animation effects
     func fadeIn(image: UIImage, duration: Double) -> Completable {
         return Completable
             .create { [weak base] observer in
