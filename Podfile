@@ -6,19 +6,19 @@ target 'PhotoSlider' do
   use_frameworks!
 
   # UI
-  pod 'SnapKit'
+  pod 'SnapKit', '~> 4.0.0'
 
   # Networking, Data Handling
-  pod 'Moya/RxSwift'
-  pod 'SwiftyJSON'
+  pod 'Moya/RxSwift', '~> 10.0.1'
+  pod 'SwiftyJSON', '~> 4.0.0'
 
   # Reactive frameworks
-  pod 'RxSwift'
-  pod 'RxCocoa'
-  pod 'RxOptional'
+  pod 'RxSwift', '~> 4.0.0'
+  pod 'RxCocoa', '~> 4.0.0'
+  pod 'RxOptional', '~> 3.3.0'
 
   # Syntactic sugar
-  pod 'Then'
+  pod 'Then', '~> 2.3.0'
 
   target 'PhotoSliderTests' do
     inherit! :search_paths
