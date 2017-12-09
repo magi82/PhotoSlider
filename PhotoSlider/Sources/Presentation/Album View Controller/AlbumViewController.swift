@@ -75,7 +75,9 @@ class AlbumViewController: UIViewController {
         view.addSubview(exitButton)
         
         photoSliderView.snp.makeConstraints {
-            $0.edges.equalToSuperview()
+            $0.top.equalTo(topLayoutGuide.snp.bottom)
+            $0.bottom.equalTo(bottomLayoutGuide.snp.top)
+            $0.left.right.equalToSuperview()
         }
         
         loadingIndicator.snp.makeConstraints {
