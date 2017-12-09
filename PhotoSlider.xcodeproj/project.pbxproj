@@ -190,7 +190,7 @@
 				9944D25C1FD9682A00E9540D /* AppDelegate.swift */,
 				9944D2921FD973A900E9540D /* Extensions */,
 				9944D28D1FD972A800E9540D /* Data */,
-				998128AF1FD99EE3000BA631 /* Dependency Container */,
+				998128AF1FD99EE3000BA631 /* Dependency */,
 				9944D28E1FD972DA00E9540D /* Repository */,
 				9944D28F1FD972F000E9540D /* Service */,
 				998128AE1FD99E1F000BA631 /* Presentation */,
@@ -287,12 +287,12 @@
 			path = Presentation;
 			sourceTree = "<group>";
 		};
-		998128AF1FD99EE3000BA631 /* Dependency Container */ = {
+		998128AF1FD99EE3000BA631 /* Dependency */ = {
 			isa = PBXGroup;
 			children = (
 				998128B21FD99F08000BA631 /* Container.swift */,
 			);
-			path = "Dependency Container";
+			path = Dependency;
 			sourceTree = "<group>";
 		};
 		99BF12D41FDA888600C64AE4 /* Photo Slider View */ = {
