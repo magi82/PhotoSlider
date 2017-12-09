@@ -12,14 +12,14 @@ import RxSwift
 import RxCocoa
 
 protocol AlbumViewControllerBindable {
-    // Properties for View
+    // Properties for binding
     var photoSliderViewModel: PhotoSliderViewBindable { get }
     
-    // View States
+    // States
     var isLoading: Driver<Bool> { get }
     var dismiss: Signal<Void> { get }
     
-    // View Actions
+    // Actions
     var viewDidAppear: PublishSubject<Void> { get }
     var exitButtonTapped: PublishSubject<Void> { get }
 }
@@ -42,7 +42,7 @@ class AlbumViewController: UIViewController {
         
         photoSliderView.bind(viewModel.photoSliderViewModel) // bind subview
         
-        // inputs
+        // States
         viewModel.isLoading
             .drive(self.rx.isLoading)
             .disposed(by: disposeBag)
@@ -51,7 +51,7 @@ class AlbumViewController: UIViewController {
             .emit(to: self.rx.dismiss)
             .disposed(by: disposeBag)
         
-        // outputs
+        // Actions
         self.rx.viewDidAppear
             .bind(to: viewModel.viewDidAppear)
             .disposed(by: disposeBag)

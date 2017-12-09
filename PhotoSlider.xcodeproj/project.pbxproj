@@ -22,6 +22,8 @@
 		995C30F01FDB808000734CF9 /* AlbumViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 995C30EF1FDB808000734CF9 /* AlbumViewController.swift */; };
 		995C30F51FDB830400734CF9 /* Reactive+UIViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 995C30F41FDB830400734CF9 /* Reactive+UIViewController.swift */; };
 		995C30F71FDB845B00734CF9 /* AlbumViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 995C30F61FDB845B00734CF9 /* AlbumViewModel.swift */; };
+		995C30FA1FDBB9AA00734CF9 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 995C30F91FDBB9AA00734CF9 /* MainViewController.swift */; };
+		995C31001FDBC30A00734CF9 /* MainViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 995C30FF1FDBC30A00734CF9 /* MainViewModel.swift */; };
 		998128B31FD99F08000BA631 /* Container.swift in Sources */ = {isa = PBXBuildFile; fileRef = 998128B21FD99F08000BA631 /* Container.swift */; };
 		99BF12D31FDA888000C64AE4 /* PhotoSliderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99BF12D21FDA888000C64AE4 /* PhotoSliderView.swift */; };
 		99E263091FD9896300332F64 /* ImageTarget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99E263081FD9896300332F64 /* ImageTarget.swift */; };
@@ -72,6 +74,8 @@
 		995C30EF1FDB808000734CF9 /* AlbumViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlbumViewController.swift; sourceTree = "<group>"; };
 		995C30F41FDB830400734CF9 /* Reactive+UIViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Reactive+UIViewController.swift"; sourceTree = "<group>"; };
 		995C30F61FDB845B00734CF9 /* AlbumViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlbumViewModel.swift; sourceTree = "<group>"; };
+		995C30F91FDBB9AA00734CF9 /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
+		995C30FF1FDBC30A00734CF9 /* MainViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewModel.swift; sourceTree = "<group>"; };
 		998128B21FD99F08000BA631 /* Container.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Container.swift; sourceTree = "<group>"; };
 		99BF12D21FDA888000C64AE4 /* PhotoSliderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoSliderView.swift; sourceTree = "<group>"; };
 		99E263081FD9896300332F64 /* ImageTarget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageTarget.swift; sourceTree = "<group>"; };
@@ -183,13 +187,13 @@
 		9944D28A1FD96FF000E9540D /* Sources */ = {
 			isa = PBXGroup;
 			children = (
+				9944D25C1FD9682A00E9540D /* AppDelegate.swift */,
 				9944D2921FD973A900E9540D /* Extensions */,
 				9944D28D1FD972A800E9540D /* Data */,
 				998128AF1FD99EE3000BA631 /* Dependency Container */,
 				9944D28E1FD972DA00E9540D /* Repository */,
 				9944D28F1FD972F000E9540D /* Service */,
 				998128AE1FD99E1F000BA631 /* Presentation */,
-				9944D25C1FD9682A00E9540D /* AppDelegate.swift */,
 			);
 			path = Sources;
 			sourceTree = "<group>";
@@ -258,16 +262,26 @@
 		995C30EE1FDB7C9E00734CF9 /* Album View Controller */ = {
 			isa = PBXGroup;
 			children = (
+				99BF12D41FDA888600C64AE4 /* Photo Slider View */,
 				995C30EF1FDB808000734CF9 /* AlbumViewController.swift */,
 				995C30F61FDB845B00734CF9 /* AlbumViewModel.swift */,
 			);
 			path = "Album View Controller";
 			sourceTree = "<group>";
 		};
+		995C30F81FDBB98B00734CF9 /* Main View Controller */ = {
+			isa = PBXGroup;
+			children = (
+				995C30F91FDBB9AA00734CF9 /* MainViewController.swift */,
+				995C30FF1FDBC30A00734CF9 /* MainViewModel.swift */,
+			);
+			path = "Main View Controller";
+			sourceTree = "<group>";
+		};
 		998128AE1FD99E1F000BA631 /* Presentation */ = {
 			isa = PBXGroup;
 			children = (
-				99BF12D41FDA888600C64AE4 /* Photo Slider View */,
+				995C30F81FDBB98B00734CF9 /* Main View Controller */,
 				995C30EE1FDB7C9E00734CF9 /* Album View Controller */,
 			);
 			path = Presentation;
@@ -640,8 +654,10 @@
 				9944D25D1FD9682A00E9540D /* AppDelegate.swift in Sources */,
 				99F22B091FD9BF2E007CED3F /* FadingImageView.swift in Sources */,
 				9944D2911FD9733500E9540D /* FlickrAPI.swift in Sources */,
+				995C31001FDBC30A00734CF9 /* MainViewModel.swift in Sources */,
 				995C30ED1FDB718A00734CF9 /* PhotoSliderViewModel.swift in Sources */,
 				99E263091FD9896300332F64 /* ImageTarget.swift in Sources */,
+				995C30FA1FDBB9AA00734CF9 /* MainViewController.swift in Sources */,
 				998128B31FD99F08000BA631 /* Container.swift in Sources */,
 				9944D2961FD9742A00E9540D /* URL.swift in Sources */,
 			);
