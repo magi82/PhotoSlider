@@ -12,6 +12,10 @@ import RxOptional
 
 protocol MainViewModel: MainViewControllerBindable {}
 
+protocol ContainerForMainViewModel {
+    func albumViewModel(photoDuration: Double) -> AlbumViewModel
+}
+
 class MainViewModelImpl: MainViewModel {
     let container: ContainerForMainViewModel
     

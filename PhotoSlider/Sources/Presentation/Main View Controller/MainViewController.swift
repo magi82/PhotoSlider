@@ -22,6 +22,10 @@ protocol MainViewControllerBindable {
     var enterButtonTapped: PublishSubject<Void> { get }
 }
 
+protocol ContainerForMainViewController {
+    func albumViewController() -> AlbumViewController
+}
+
 class MainViewController: UIViewController {
     private var disposeBag = DisposeBag()
     

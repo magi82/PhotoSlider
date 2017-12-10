@@ -72,11 +72,3 @@ class Container {
 }
 
 extension Container: ContainerForMainViewController, ContainerForMainViewModel {}
-
-protocol ContainerForMainViewController {
-    func albumViewController() -> AlbumViewController
-}
-
-protocol ContainerForMainViewModel {
-    func albumViewModel(photoDuration: Double) -> AlbumViewModel
-}
