@@ -73,13 +73,6 @@ class AlbumViewModelImpl: AlbumViewModel {
             .do(onNext: { [events] in events.onNext(.reload) })
             .subscribe()
             .disposed(by: disposeBag)
-        
-        // exitButtonTapped finishes event
-        exitButtonTapped
-            .take(1)
-            .do(onNext: { [events] in events.onCompleted() })
-            .subscribe()
-            .disposed(by: disposeBag)
     }
 }
 
