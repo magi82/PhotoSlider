@@ -7,8 +7,6 @@
 //
 
 import UIKit
-import RxSwift
-import Moya
 import Then
 
 @UIApplicationMain
@@ -23,4 +21,3 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         return true
     }
 }
-
