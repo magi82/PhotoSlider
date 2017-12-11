@@ -27,8 +27,8 @@ class AlbumViewModelImpl: AlbumViewModel {
     let dismiss: Signal<Void>
     
     // View actions
-    var viewDidAppear = PublishSubject<Void>()
-    var exitButtonTapped = PublishSubject<Void>()
+    let viewDidAppear = PublishSubject<Void>()
+    let exitButtonTapped = PublishSubject<Void>()
     
     init(
         photoSliderViewModel: PhotoSliderViewModel,
